@@ -50,7 +50,7 @@ def home():
     # Within the database 'messages', we find all of the messages and sort them in descending order of insertion date
     docs = db.messages.find({}).sort("created_at", -1)
     # Then we return the index.html page with all of this information
-    return render_template('index.html', docs=docs)
+    return render_template('index.html', docs=docs) # We pass docs = docs as a parameter so that in index.html, they can utilize all the data here and from the database. 
 
 # We create another route where we specify the method as POST as we're going to supply some information (name, message) to the our request to the server
 @app.route('/create', methods=['POST'])
