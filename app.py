@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response         # All necessary imports for making/receiving HTTP requests to the server
 from dotenv import load_dotenv                                                              # Useful to load the environment variables from .env files into the Python environment
 
-import pymongo                                                                              # All imports for database management through the back-end
+import pymongo                                                                              # All imports for database management functions to execute through python
 from bson.objectid import ObjectId                                                          # Useful 'ObjectId' class that is a Python representation of MongoDB’s data type for documenting _id fields
 
 import os
