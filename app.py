@@ -44,6 +44,36 @@ except Exception as err:
 
 
 # 4. Setup routes for different HTTP requests 
-# @app.route('/')
-# def home():
+# This is the default index route (the home page)
+@app.route('/')
+def home():
+    # Within the database 'messages', we find all of the messages and sort them in descending order of insertion date
+    docs = db.messages.find({}).sort("created_at", -1)
+    # Then we return the index.html page with all of this information
+    return render_template('index.html', docs=docs)
+
+# We create another route where we specify the method as POST as we're going to add some information (name, message) to the our request to the server
+@app.route('/create', methods=['POST'])
+def create_post(): 
+    # We request the form information from the html page into these variables using flask 
+    name = request.form['fname']
+    message = request.form['fmessage']
+
+    # We create a new document with this information
+    doc = {
+        "name": name,
+        "message": message,
+        "created _at": datetime.datetime.utcnow()
+    }
+
+    # We insert this new document into our 'messages' database
+    db.messages.insert_one(doc)
+    # Makes a request for the / route, so redirects the user back to the home page
+    return redirect(url_for('home'))
+
+
+#
+# @app.route('/edit')
+# def edit_post(): 
+
 

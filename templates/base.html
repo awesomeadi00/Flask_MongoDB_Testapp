@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Test App</title>
+        <link rel="stylesheet", href="{{url_for('static', filename='css/style.css')}}">
+    </head>
+    
+    <body>
+        <div class="container">
+            <header>
+                <h1>Test-App Example</h1>
+                <nav>
+                    <a href="{{ url_for('home')}}">Home</a>
+                </nav>
+            </header>
+            
+            <!-- This is Django Syntax which allows you to continue html code through these bracket containers in other html files in the same directory -->
+            <!-- This essentially means start the code from the block container, all the way till the endblock -->
+            <main>
+                {% block container %} {% endblock %}
+            </main>
+
+            <footer>
+                <p>
+                    &copy; 2022. Shared under the GPL3 license. Source code available at
+                    <a href="https://github.com/nyu-software-engineering/flask-pymongo-web-app-example">Github</a>.
+                </p>    
+            </footer>
+        </div>    
+    </body>
+</html>
