@@ -52,7 +52,7 @@ def home():
     # Then we return the index.html page with all of this information
     return render_template('index.html', docs=docs)
 
-# We create another route where we specify the method as POST as we're going to add some information (name, message) to the our request to the server
+# We create another route where we specify the method as POST as we're going to supply some information (name, message) to the our request to the server
 @app.route('/create', methods=['POST'])
 def create_post(): 
     # We request the form information from the html page into these variables using flask 
@@ -72,8 +72,46 @@ def create_post():
     return redirect(url_for('home'))
 
 
-#
-# @app.route('/edit')
-# def edit_post(): 
+# We create another route where we parameterize the route with a specific post_id, since we are editing one post. Once again the method is POST since we're supplying data
+@app.route('/edit/<post_id>', methods=['POST'])
+def edit_post(post_id): 
+    name = request.form['fname']
+    message = request.form['fmessage']
+
+    # We update the document with the new name and message
+    doc = {
+        # "_id": ObjectId(post_id),
+        "name": name,
+        "message": message,
+        "created _at": datetime.datetime.utcnow()
+    }
+
+    # Here, we update one of the elements in the 'messages' database, only the ones which have the id as assigned from the server, so the exact post with that id.
+    # the $set operator is used to indicate which fields in the document should be updated, since we're updating the entire document, we just pass the edited 'doc' to the set
+    db.messages.update_one(
+        {"_id": ObjectId(post_id)},
+        {"$set": doc}
+    )
+
+    # Once complete, we then make a request to redirect back to the home page '/'
+    return redirect(url_for('home'))
 
 
+# We create another route where we delete a particular post using parameterizing to specify which post to delete
+@app.route('/delete/<post_id>')
+def delete_post(post_id):
+    #Here we delete one element from the 'messages' database which has the the same id as the one prompted by the server. 
+    db.messages.delete_one({"_id": ObjectId(post_id)})
+    return redirect(url_for('home')) 
+
+# Here we have a final app route which involves any error_handling
+# In case the connection to the database in unsuccessful, it passes the Exception and error into this route where it prompts the error.html page
+@app.errorhandler(Exception)
+def handle_error(err):
+    return render_template('error.html', error=err)
+
+
+# Runs the app, this is what acts as the main() function from the initialization of the __name__ earlier: 
+if __name__ == "__main__":
+    PORT = os.getenv('PORT', 5000) # Use the PORT environment variable, or default to 5000
+    app.run(port=PORT)
