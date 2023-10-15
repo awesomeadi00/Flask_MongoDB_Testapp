@@ -25,8 +25,7 @@ app = Flask(__name__)
 # FLASK_ENV = development
 # GITHUB_SECRET = your_github_secret
 # GITHUB_REPO = https://github.com/your-repository-url
-
-load_dotenv()  # Take environment variables from .env.
+load_dotenv()  
 
 
 # 3. Set up the connection to the mongoDB database through pymongo
@@ -122,4 +121,4 @@ def handle_error(err):
 # Runs the app, this is what acts as the main() function from the initialization of the __name__ earlier: 
 if __name__ == "__main__":
     PORT = os.getenv('PORT', 5000) # Use the PORT environment variable, or default to 5000
-    app.run(port=PORT)
+    app.run(host="0.0.0.0", port=PORT)
