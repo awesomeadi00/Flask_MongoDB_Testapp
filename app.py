@@ -37,12 +37,12 @@ if os.getenv('FLASK_ENV', 'development') == 'development':
 # Connect to the database: 
 # You connect through this function ("your_db_host", 27017, username="your_db_username", password="your_db_password", authSource="your_db_name")
 # In our case, we load the URI through the .env file through localHost, 27017, username: admin, password: secret, Test_App and a TimeOut server at port 5000
-connection = pymongo.MongoClient(os.getenv('MONGO_URI'), serverSelectionTimeoutMS=5000)
+connection = pymongo.MongoClient(os.getenv('MONGO_URI'))
 try:
     # Verify the connection works by pinging the database
     connection.admin.command('ping')                # The ping command is cheap and does not require auth.
     db = connection[os.getenv('MONGO_DBNAME')]      # Store a reference to the database
-    print(' *', 'Connected to MongoDB!')            # If we get here, the connection worked!
+    print('*', 'Connected to MongoDB!')             # If we get here, the connection worked!
 
 except Exception as err:
     # The ping command failed, so the connection is not available.

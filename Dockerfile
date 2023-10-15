@@ -15,8 +15,5 @@ ADD . .
 # expose the port that the Flask app is running on... by default 5000
 EXPOSE 5000
 
-# Define environment variable for MongoDB connection
-ENV MONGO_URI="mongodb://testapp_database:27017/test_app"
-
 # Run app.py when the container launches
 CMD [ "python3", "-m" , "flask", "run", "--host=0.0.0.0"]
