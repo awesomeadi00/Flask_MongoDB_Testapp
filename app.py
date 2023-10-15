@@ -25,8 +25,7 @@ app = Flask(__name__)
 # FLASK_ENV = development
 # GITHUB_SECRET = your_github_secret
 # GITHUB_REPO = https://github.com/your-repository-url
-dotenv_path = '../app.venv.env'
-load_dotenv(dotenv_path)  
+load_dotenv()  
 
 
 # 3. Set up the connection to the mongoDB database through pymongo
