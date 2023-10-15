@@ -2,11 +2,11 @@
 
 <h2>Write a Post</h2>
 
-<!-- This establishes a connection to the app.py function create_post() -->
+<!-- When they submit the form, it calls the route/create in app,py which calls the create_post() -->
 <form method="POST" action="{{url_for('create_post')}}">
   <input type="text" id="fname" name="fname" placeholder="Your name"/>
   <br />
   <textarea type="text" id="fmessage" name="fmessage" placeholder="Message"></textarea>
   <br />
-  <input type="submit" value="Save" />
+  <input type="submit" value="Send" />
 </form>

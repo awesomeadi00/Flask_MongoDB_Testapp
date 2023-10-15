@@ -5,16 +5,18 @@
     <h2>Posts:</h2>
 
     <section class="posts">
+
+        <!-- This is a mini article section where it renders the new_post_form.html section -->
         <article class="post new-post">
             {% include 'new_post_form.html' %}
         </article>
 
-        <!-- Checking for every document in docs (database) -->
+        <!-- This essentially prints out every user's posts, it loops for every document in the database -->
         {% for doc in docs %}
         <article class="post">
             <nav class="controls">
-                <!-- Here, we get the url for the edit.html file, we give post_id the id of the document they're trying to edit or delete -->
-                <a href="{{ url_for('edit', post_id = doc._id)}}">Edit</a> | <a href="{{ url_for('delete_post', post_id = doc._id)}}">Delete</a>
+                <!-- When we click the edit button, it routes to the edit/<post_id> route on app.py, same thing for delete, we give post_id the id of the document they're trying to edit or delete -->
+                <a href="{{ url_for('edit', post_id = doc._id)}}">Edit - {{ url_for('edit_post', post_id=doc._id) }}</a> | <a href="{{ url_for('delete_post', post_id = doc._id)}}">Delete</a>
             </nav>
 
             <p class="author">

@@ -39,7 +39,7 @@ if os.getenv('FLASK_ENV', 'development') == 'development':
 # You connect through this function ("your_db_host", 27017, username="your_db_username", password="your_db_password", authSource="your_db_name")
 # In our case, we load the URI through the .env file through localHost, 27017, username: admin, password: secret, Test_App and a TimeOut server at port 5000
 connection = pymongo.MongoClient(os.getenv('MONGO_URI'))
-print("MONGO_URI:", os.getenv('MONGO_URI'))
+print("MONGO_URI:", os.getenv('MONGO_URI'), serverSelectionTimeoutMS=5000)
 
 try:
     # Verify the connection works by pinging the database
@@ -82,15 +82,22 @@ def create_post():
     return redirect(url_for('home'))
 
 
-# We create another route where we parameterize the route with a specific post_id, since we are editing one post. Once again the method is POST since we're supplying data
+# We have a route for the Edit Button on every post where we parameterize the route with a specific post_id. This simply renders the edit.html file based on the post_id of the post. 
+@app.route('/edit/<post_id>')
+def edit(post_id):
+    doc = database.messages.find_one({"_id": ObjectId(post_id)})
+    return render_template('edit.html', doc=doc) # Also sends the document (the post) to the edit.html file for specifying the data in there. 
+
+
+# We have another route for the Edit functionality which is called when the User presses the save button on the edit.hml, this updates the database here on the backend. 
 @app.route('/edit/<post_id>', methods=['POST'])
 def edit_post(post_id): 
+    # When the edit button is pressed, it routes here... But the client can't request to the server because the edit.html file isn't loaded. 
     name = request.form['fname']
     message = request.form['fmessage']
 
     # We update the document with the new name and message
     doc = {
-        # "_id": ObjectId(post_id),
         "name": name,
         "message": message,
         "created_at": datetime.datetime.now()
