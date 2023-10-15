@@ -39,7 +39,7 @@ if os.getenv('FLASK_ENV', 'development') == 'development':
 # You connect through this function ("your_db_host", 27017, username="your_db_username", password="your_db_password", authSource="your_db_name")
 # In our case, we load the URI through the .env file through localHost, 27017, username: admin, password: secret, Test_App and a TimeOut server at port 5000
 connection = pymongo.MongoClient(os.getenv('MONGO_URI'))
-print("MONGO_URI:", os.getenv('MONGO_URI'), serverSelectionTimeoutMS=5000)
+print("MONGO_URI:", os.getenv('MONGO_URI'))
 
 try:
     # Verify the connection works by pinging the database
