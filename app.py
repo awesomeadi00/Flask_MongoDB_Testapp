@@ -93,7 +93,7 @@ def edit_post(post_id):
         # "_id": ObjectId(post_id),
         "name": name,
         "message": message,
-        "created_at": datetime.datetime.utcnow()
+        "created_at": datetime.datetime.now()
     }
 
     # Here, we update one of the elements in the 'messages' database, only the ones which have the id as assigned from the server, so the exact post with that id.
