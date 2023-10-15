@@ -18,6 +18,14 @@ app = Flask(__name__)
 # 2. Load credentials and configuration options from .env file
 # This file is necessary to run the appliaction. It contains sensitive environment variables holding credentials such as the database connection string, username, password, etc. 
 # This file should be excluded from version control in the .gitignore file.
+
+# MONGO_DBNAME = your_db_name
+# MONGO_URI = "mongodb://your_db_username:your_db_password@your_db_host_server_name:27017/your_db_name?authSource=admin&retryWrites=true&w=majority"
+# FLASK_APP = app.py
+# FLASK_ENV = development
+# GITHUB_SECRET = your_github_secret
+# GITHUB_REPO = https://github.com/your-repository-url
+
 load_dotenv()  # Take environment variables from .env.
 
 
