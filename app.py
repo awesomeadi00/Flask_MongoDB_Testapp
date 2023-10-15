@@ -25,7 +25,8 @@ app = Flask(__name__)
 # FLASK_ENV = development
 # GITHUB_SECRET = your_github_secret
 # GITHUB_REPO = https://github.com/your-repository-url
-load_dotenv()  
+dotenv_path = '../app.venv.env'
+load_dotenv(dotenv_path)  
 
 
 # 3. Set up the connection to the mongoDB database through pymongo
@@ -38,10 +39,12 @@ if os.getenv('FLASK_ENV', 'development') == 'development':
 # You connect through this function ("your_db_host", 27017, username="your_db_username", password="your_db_password", authSource="your_db_name")
 # In our case, we load the URI through the .env file through localHost, 27017, username: admin, password: secret, Test_App and a TimeOut server at port 5000
 connection = pymongo.MongoClient(os.getenv('MONGO_URI'))
+print("MONGO_URI:", os.getenv('MONGO_URI'))
+
 try:
     # Verify the connection works by pinging the database
     connection.admin.command('ping')                # The ping command is cheap and does not require auth.
-    db = connection[os.getenv('MONGO_DBNAME')]      # Store a reference to the database
+    database = connection[os.getenv('MONGO_DBNAME')]      # Store a reference to the database
     print('*', 'Connected to MongoDB!')             # If we get here, the connection worked!
 
 except Exception as err:
@@ -55,7 +58,7 @@ except Exception as err:
 @app.route('/')
 def home():
     # Within the database 'messages', we find all of the messages and sort them in descending order of insertion date
-    docs = db.messages.find({}).sort("created_at", -1)
+    docs = database.messages.find({}).sort("created_at", -1)
     # Then we return the index.html page with all of this information
     return render_template('index.html', docs=docs) # We pass docs = docs as a parameter so that in index.html, they can utilize all the data here and from the database. 
 
@@ -74,7 +77,7 @@ def create_post():
     }
 
     # We insert this new document into our 'messages' database
-    db.messages.insert_one(doc)
+    database.messages.insert_one(doc)
     # Makes a request for the / route, so redirects the user back to the home page
     return redirect(url_for('home'))
 
@@ -95,7 +98,7 @@ def edit_post(post_id):
 
     # Here, we update one of the elements in the 'messages' database, only the ones which have the id as assigned from the server, so the exact post with that id.
     # the $set operator is used to indicate which fields in the document should be updated, since we're updating the entire document, we just pass the edited 'doc' to the set
-    db.messages.update_one(
+    database.messages.update_one(
         {"_id": ObjectId(post_id)},
         {"$set": doc}
     )
@@ -108,7 +111,7 @@ def edit_post(post_id):
 @app.route('/delete/<post_id>')
 def delete_post(post_id):
     #Here we delete one element from the 'messages' database which has the the same id as the one prompted by the server. 
-    db.messages.delete_one({"_id": ObjectId(post_id)})
+    database.messages.delete_one({"_id": ObjectId(post_id)})
     return redirect(url_for('home')) 
 
 # Here we have a final app route which involves any error_handling
@@ -120,5 +123,4 @@ def handle_error(err):
 
 # Runs the app, this is what acts as the main() function from the initialization of the __name__ earlier: 
 if __name__ == "__main__":
-    PORT = os.getenv('PORT', 5000) # Use the PORT environment variable, or default to 5000
-    app.run(host="0.0.0.0", port=PORT)
+    app.run(host="0.0.0.0", port=10000)
