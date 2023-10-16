@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, redirect, url_for, make_response         # All necessary imports for making/receiving HTTP requests to the server
 from dotenv import load_dotenv                                                              # Useful to load the environment variables from .env files into the Python environment
-
+import certifi
 import pymongo                                                                              # All imports for database management functions to execute through python
 from bson.objectid import ObjectId                                                          # Useful 'ObjectId' class that is a Python representation of MongoDB’s data type for documenting _id fields
 
@@ -38,7 +38,7 @@ if os.getenv('FLASK_ENV', 'development') == 'development':
 # You connect through this function ("your_db_host", 27017, username="your_db_username", password="your_db_password", authSource="your_db_name")
 # In our case, we load the URI through the .env file through localHost, 27017, username: admin, password: secret, Test_App and a TimeOut server at port 5000
 connection = pymongo.MongoClient(os.getenv('MONGO_URI'))
-print("MONGO_URI:", os.getenv('MONGO_URI'))
+# connection = pymongo.MongoClient(os.getenv('MONGO_URI'), tlsCAFile=certifi.where())
 
 try:
     # Verify the connection works by pinging the database
